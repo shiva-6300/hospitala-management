@@ -6,15 +6,21 @@ function PatientList({ refreshFlag }) {
   // Function to fetch patients from backend
   const fetchPatients = async () => {
     try {
-      const response = await fetch('http://localhost:8080/patients');
+      const response = await fetch('http://52.66.177.87:8080/patients');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch patients');
+      }
+
       const data = await response.json();
       setPatients(data);
     } catch (error) {
       console.error('Error fetching patients:', error);
+      alert('Could not connect to backend server');
     }
   };
 
-  // useEffect runs whenever refreshFlag changes (including on first page load)
+  // Fetch patients when component loads or refreshFlag changes
   useEffect(() => {
     fetchPatients();
   }, [refreshFlag]);
@@ -22,10 +28,11 @@ function PatientList({ refreshFlag }) {
   return (
     <div>
       <h3>Patient List</h3>
+
       {patients.length === 0 ? (
         <p>No patients found.</p>
       ) : (
-        <table>
+        <table border="1" cellPadding="8">
           <thead>
             <tr>
               <th>ID</th>
@@ -34,6 +41,7 @@ function PatientList({ refreshFlag }) {
               <th>Gender</th>
             </tr>
           </thead>
+
           <tbody>
             {patients.map((patient) => (
               <tr key={patient.id}>
