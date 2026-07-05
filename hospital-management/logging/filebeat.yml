@@ -1,0 +1,10 @@
+# Minimal Filebeat configuration.
+# It reads log files from the backend and sends them to Logstash.
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/hospital-backend/*.log
+
+output.logstash:
+  hosts: ["logstash:5044"]

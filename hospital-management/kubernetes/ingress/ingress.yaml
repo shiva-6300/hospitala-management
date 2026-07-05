@@ -1,0 +1,28 @@
+# A simple Ingress rule that routes external traffic to the frontend
+# and backend services based on the URL path.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hospital-ingress
+  namespace: hospital-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: hospital.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 3000
+          - path: /patients
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 8080

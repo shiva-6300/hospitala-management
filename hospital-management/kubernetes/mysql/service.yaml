@@ -1,0 +1,14 @@
+# Exposes MySQL inside the cluster so the backend can reach it
+# at the hostname "mysql-service".
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: hospital-app
+spec:
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
+  type: ClusterIP

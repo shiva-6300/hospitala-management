@@ -1,0 +1,15 @@
+# Exposes the frontend inside the cluster, and to outside traffic
+# using NodePort so it can be accessed from a browser.
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: hospital-app
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30080
+  type: NodePort

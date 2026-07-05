@@ -1,0 +1,43 @@
+// A very basic Jenkins pipeline for this project.
+// It checks out the code, builds the backend with Maven,
+// and then builds a Docker image for the backend.
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Git Checkout') {
+            steps {
+                // Pulls the latest code from the repository
+                git branch: 'main', url: 'https://github.com/your-username/hospital-management.git'
+            }
+        }
+
+        stage('Maven Build') {
+            steps {
+                // Builds the Spring Boot backend and packages it into a jar
+                dir('backend') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                // Builds a Docker image for the backend using its Dockerfile
+                dir('backend') {
+                    sh 'docker build -t hospital-backend:latest .'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check the logs above.'
+        }
+    }
+}

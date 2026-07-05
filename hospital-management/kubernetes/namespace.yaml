@@ -1,0 +1,6 @@
+# Creates an isolated namespace so all hospital app resources
+# are grouped together and separate from other apps in the cluster.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hospital-app

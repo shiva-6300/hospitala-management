@@ -1,0 +1,26 @@
+{
+  "title": "Hospital Backend Dashboard",
+  "description": "A minimal Grafana dashboard showing basic backend health metrics.",
+  "panels": [
+    {
+      "title": "Backend Uptime",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "up{job=\"hospital-backend\"}"
+        }
+      ]
+    },
+    {
+      "title": "HTTP Requests Count",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "http_server_requests_seconds_count"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 30,
+  "version": 1
+}
