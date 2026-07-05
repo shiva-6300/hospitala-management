@@ -1,40 +1,37 @@
 import React, { useState } from 'react';
 
 function PatientForm({ onPatientAdded }) {
-  // Local state to hold form input values
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('Male');
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // stop the page from refreshing
+    e.preventDefault();
 
-    // Basic validation: don't submit if fields are empty
     if (!name || !age) {
       alert('Please fill in all fields');
       return;
     }
 
     const newPatient = {
-      name: name,
+      name,
       age: parseInt(age),
-      gender: gender
+      gender
     };
 
     try {
-      // Send POST request to backend to create a patient
-      const response = await fetch('http://localhost:8080/patients', {
+      const response = await fetch('http://52.66.177.87:8080/patients', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(newPatient)
       });
 
       if (response.ok) {
-        // Clear the form
         setName('');
         setAge('');
         setGender('Male');
-        // Tell the parent component (App.js) that a patient was added
         onPatientAdded();
       } else {
         alert('Failed to add patient');
@@ -54,6 +51,7 @@ function PatientForm({ onPatientAdded }) {
         placeholder="Patient Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        required
       />
 
       <input
@@ -61,9 +59,13 @@ function PatientForm({ onPatientAdded }) {
         placeholder="Age"
         value={age}
         onChange={(e) => setAge(e.target.value)}
+        required
       />
 
-      <select value={gender} onChange={(e) => setGender(e.target.value)}>
+      <select
+        value={gender}
+        onChange={(e) => setGender(e.target.value)}
+      >
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Other">Other</option>
