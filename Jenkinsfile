@@ -22,6 +22,20 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir('hospital-management/backend') {
+                    withSonarQubeEnv('sonar-scanner') {
+                        sh '''
+                            mvn sonar:sonar \
+                            -Dsonar.projectKey=hospital-management \
+                            -Dsonar.projectName=Hospital-Management
+                        '''
+                    }
+                }
+            }
+        }
     }
 
     post {
