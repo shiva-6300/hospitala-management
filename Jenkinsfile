@@ -7,17 +7,11 @@ pipeline {
     }
 
     stages {
-
-        stage('Git Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/shiva-6300/hospitala-management.git'
-            }
-        }
-
         stage('Build') {
             steps {
-                sh 'mvn clean install -DskipTests'
+                dir('backend') {
+                    sh 'mvn clean install -DskipTests'
+                }
             }
         }
     }
