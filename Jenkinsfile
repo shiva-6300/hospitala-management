@@ -7,9 +7,25 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+
+        stage('Debug Workspace') {
             steps {
-                dir('backend') {
+                sh '''
+                    echo "Current Directory:"
+                    pwd
+
+                    echo "Workspace Contents:"
+                    ls -R
+
+                    echo "POM Location:"
+                    find . -name pom.xml
+                '''
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                dir('hospital-management/backend') {
                     sh 'mvn clean install -DskipTests'
                 }
             }
@@ -20,8 +36,13 @@ pipeline {
         success {
             echo 'Build Successful!'
         }
+
         failure {
             echo 'Build Failed!'
+        }
+
+        always {
+            cleanWs()
         }
     }
 }
