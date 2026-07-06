@@ -8,18 +8,10 @@ pipeline {
 
     stages {
 
-        stage('Debug Workspace') {
+        stage('Git Checkout') {
             steps {
-                sh '''
-                    echo "Current Directory:"
-                    pwd
-
-                    echo "Workspace Contents:"
-                    ls -R
-
-                    echo "POM Location:"
-                    find . -name pom.xml
-                '''
+                git branch: 'main',
+                    url: 'https://github.com/shiva-6300/hospitala-management.git'
             }
         }
 
@@ -39,10 +31,6 @@ pipeline {
 
         failure {
             echo 'Build Failed!'
-        }
-
-        always {
-            cleanWs()
         }
     }
 }
