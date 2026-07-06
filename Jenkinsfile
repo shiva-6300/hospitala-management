@@ -36,6 +36,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Trivy File System Scan') {
+            steps {
+                dir('hospital-management/backend') {
+                    sh '''
+                        trivy fs . \
+                        --format table \
+                        --severity HIGH,CRITICAL \
+                        --exit-code 0
+                    '''
+                }
+            }
+        }
     }
 
     post {
@@ -45,6 +58,10 @@ pipeline {
 
         failure {
             echo 'Build Failed!'
+        }
+
+        always {
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
         }
     }
 }
